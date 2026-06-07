@@ -56,3 +56,7 @@ python tools/split_image.py <你的故事板图片路径>
 3. **提示词** (Step 4 生成的专属动效镜头指令)
 
 一键组合，你就能得到具有超强一致性、运镜丰富且质感爆炸的高级带货短视频！
+
+## 📚 高阶玩法与核心提示词库 (Advanced Guide)
+想要探索更专业的工作流（例如 **汽车 TVC 分镜**、**影视级动作与微表情精确控制**、基于 Seedance 2.0 的动态指令），请参考：
+👉 [高级提示词与核心原理指南 (PROMPT_TEMPLATES.md)](docs/PROMPT_TEMPLATES.md)
