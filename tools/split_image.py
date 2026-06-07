@@ -38,7 +38,7 @@ def main():
 
     # 定义 3x3 结构
     rows = 3
-    cols = 3
+    cols = 4
     cell_w = width / cols
     cell_h = height / rows
 
@@ -83,7 +83,7 @@ def main():
             save_path = os.path.join(output_dir, filename)
             sharpened_img.save(save_path, "PNG", compress_level=3) # 适度压缩保存，速度更快且画质无损
             
-            print(f"    - 分镜 {index:02d}/9 [去噪+超分1024p+锐化] -> {save_path}")
+            print(f"    - 分镜 {index:02d}/12 [去噪+超分1024p+锐化] -> {save_path}")
             index += 1
 
     print(f"\n[*] 优化完毕！9个超清独立分镜已生成在 '{output_dir}'，快去喂给视频生成模型吧！")
