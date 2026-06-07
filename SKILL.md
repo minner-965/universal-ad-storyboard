@@ -26,3 +26,12 @@ Layout: A large landscape 16:9 storyboard. Contains a seamless grid of 9 cinemat
    - Upscale each frame to 1024x576 using LANCZOS.
    - Apply a Sharpen filter for maximum clarity.
 4. Deliver the 9 sliced images to the user.
+## 4. Video Script & I2V Generation (Optional but Recommended)
+After generating and slicing the 9 or 16 frames, you can use the following universal prompt to generate a cohesive video storyboard and Image-to-Video (I2V) prompts for tools like Runway Gen-3, Luma, or Kling.
+
+```text
+I have generated high-res storyboard frames for [Product Name]. 
+To turn these static frames into a high-conversion commercial video, provide a two-step packaging:
+1. 15-Second Commercial Video Storyboard (Table): Create a table with columns: Scene #, Duration (s), Visual Action, Camera Motion, Voiceover, Audio & BGM.
+2. I2V Prompts: For each core scene, write a highly detailed English I2V prompt optimized for video generation AI. Must include subject action, camera movement (e.g., Macro close-up), and lighting/atmosphere.
+```
