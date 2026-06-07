@@ -1,5 +1,6 @@
-﻿import os
+import os
 import sys
+import argparse
 from urllib.request import urlopen, Request
 from PIL import Image, ImageFilter
 
@@ -17,14 +18,14 @@ def download_or_load_image(source):
         return Image.open(source)
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python split_image.py <image_url_or_local_path>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="自动无损切割故事板大图")
+    parser.add_argument("source", help="图片本地路径或网络URL")
+    parser.add_argument("--rows", type=int, default=3, help="图片包含的行数 (默认: 3)")
+    parser.add_argument("--cols", type=int, default=4, help="图片包含的列数 (默认: 4)")
+    args = parser.parse_args()
 
-    source = sys.argv[1]
-    
     try:
-        img = download_or_load_image(source)
+        img = download_or_load_image(args.source)
     except Exception as e:
         print(f"[-] 图片加载失败: {e}")
         sys.exit(1)
@@ -36,9 +37,9 @@ def main():
     width, height = img.size
     print(f"[+] 原始故事板尺寸: {width}x{height}")
 
-    # 定义 3x3 结构
-    rows = 3
-    cols = 4
+    # 使用参数定义的行列结构
+    rows = args.rows
+    cols = args.cols
     cell_w = width / cols
     cell_h = height / rows
 
@@ -47,7 +48,8 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     index = 1
-    print("[+] 开始执行超高清、无边框、无损切割流程...")
+    total = rows * cols
+    print(f"[+] 开始执行超高清、无边框、无损切割流程 ({rows}x{cols} = {total}个分镜)...")
     
     for r in range(rows):
         for c in range(cols):
