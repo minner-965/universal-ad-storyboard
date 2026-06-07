@@ -19,8 +19,13 @@ Layout: A large landscape 16:9 storyboard. Contains a seamless grid of 9 cinemat
 ```
 
 ## 3. Workflow Steps
+> ⚠️ **CRITICAL E-COMMERCE RULE (Product Consistency)**
+> Text-to-image models (like DALL-E 3) will hallucinate product details, leading to false advertising. 
+> To guarantee the generated t-shirt/product matches the original uploaded image exactly, the Image Generation node MUST use the uploaded image as a reference:
+> - **Midjourney**: Use `--cref <image_url> --cw 100` to lock the character/product.
+> - **Stable Diffusion**: Use **IP-Adapter** to extract and apply the exact product graphic.
 1. Determine the brand, product name, and aesthetic style.
-2. Run the `generate_image` tool using the prompt above.
+2. Run an Image Generation tool (MUST support Image Reference / IP-Adapter / Midjourney --cref) using the prompt above AND the user's original product image to lock product consistency.
 3. Run `python tools/split_image.py <image_path>` which will automatically:
    - Perform a 4% inner crop to remove borders.
    - Upscale each frame to 1024x576 using LANCZOS.
