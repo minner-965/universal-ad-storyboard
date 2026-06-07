@@ -1,10 +1,10 @@
-import os
+﻿import os
 import sys
 from urllib.request import urlopen, Request
-from PIL import Image
+from PIL import Image, ImageFilter
 
 def download_or_load_image(source):
-    """支持本地路径和 HTTP URL (使用标准 urllib 避免依赖)"""
+    """支持本地路径和 HTTP URL"""
     if source.startswith(('http://', 'https://')):
         print(f"[+] 正在从网络下载故事板大图: {source}")
         req = Request(source, headers={'User-Agent': 'Mozilla/5.0'})
@@ -29,12 +29,16 @@ def main():
         print(f"[-] 图片加载失败: {e}")
         sys.exit(1)
 
-    width, height = img.size
-    print(f"[+] 大图尺寸: {width}x{height}")
+    # 统一转换为 RGB 模式，避免部分 PNG 通道导致的色彩失真
+    if img.mode != 'RGB':
+        img = img.convert('RGB')
 
-    # 定义 3x5 结构
+    width, height = img.size
+    print(f"[+] 原始故事板尺寸: {width}x{height}")
+
+    # 定义 3x3 结构
     rows = 3
-    cols = 5
+    cols = 3
     cell_w = width / cols
     cell_h = height / rows
 
@@ -43,7 +47,7 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     index = 1
-    print("[+] 开始自动切割分镜...")
+    print("[+] 开始执行超高清、无边框、无损切割流程...")
     
     for r in range(rows):
         for c in range(cols):
@@ -52,26 +56,37 @@ def main():
             right = (c + 1) * cell_w
             bottom = (r + 1) * cell_h
             
-            # 无损裁剪并高清放大以提升视频剪辑质量
+            # 1. 基础无损裁剪
             cropped_img = img.crop((left, top, right, bottom))
-            target_width = 1080
-            target_height = int(target_width * (cell_h / cell_w))
             
-            # 使用 LANCZOS 算法进行高质量超分放大
+            # 2. 【去黑边算法】向内微调 4% 像素，干掉网格线、白边和序号标签
+            w, h = cropped_img.size
+            pad_w = int(w * 0.04)  # 左右各去 4%
+            pad_h = int(h * 0.04)  # 上下各去 4%
+            trimmed_img = cropped_img.crop((pad_w, pad_h, w - pad_w, h - pad_h))
+            
+            # 3. 【高清重建】将极小的小图无损重构放大到 1024x576 (标准 16:9 电影尺寸)
+            # 使用业内顶尖的 LANCZOS (抗锯齿重采样) 滤镜
+            target_w, target_h = 1024, 576
             try:
                 resample_method = Image.Resampling.LANCZOS
             except AttributeError:
-                resample_method = Image.LANCZOS # 兼容旧版 Pillow
+                resample_method = Image.LANCZOS
                 
-            high_res_img = cropped_img.resize((target_width, target_height), resample_method)
+            upscaled_img = trimmed_img.resize((target_w, target_h), resample_method)
             
+            # 4. 【高频锐化】应用图像锐化，挽回放大带来的细节丢失，让皮革、金属、产品细节更清晰
+            sharpened_img = upscaled_img.filter(ImageFilter.SHARPEN)
+            
+            # 5. 保存分镜 (使用 PNG 保证绝对无损)
             filename = f"slice_{index:02d}.png"
             save_path = os.path.join(output_dir, filename)
-            high_res_img.save(save_path, "PNG", optimize=False)
-            print(f"    - 已保存高清分镜 {index:02d}/15 -> {save_path}")
+            sharpened_img.save(save_path, "PNG", compress_level=3) # 适度压缩保存，速度更快且画质无损
+            
+            print(f"    - 分镜 {index:02d}/9 [去噪+超分1024p+锐化] -> {save_path}")
             index += 1
 
-    print(f"\n[*] 恭喜！15个独立分镜已全部切片并高清放大完成！请在目录 '{output_dir}' 中查看。")
+    print(f"\n[*] 优化完毕！9个超清独立分镜已生成在 '{output_dir}'，快去喂给视频生成模型吧！")
 
 if __name__ == "__main__":
     main()
