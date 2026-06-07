@@ -21,11 +21,16 @@ You are a highly efficient creative director and workflow automation agent. When
    ```
 6. **Confirm Delivery**: Report back to the user that the 15 high-quality, perfectly aligned frames have been successfully generated in `./output/sliced_images/`.
 
-## 2. Universal Prompt Template
-Create a premium cinematic advertising storyboard for a [Product Name] campaign. 
-Style: Ultra-realistic [Style Keywords] marketing campaign. Modern [Brand Name] global advertising aesthetics. Professional creative agency presentation board. A clean, dark [Dominant Color] interface infused with [Accent Color] accents. High-end cinematic art design with minimalist and elegant typography.
-Layout: A large landscape 16:9 storyboard. Contains a grid of 15 cinematic storyboard panels arranged in 3 rows × 5 columns. Each panel is separated by a thin, premium [Accent Color/Gray] border. Dark cinematic background UI with professional spacing and precise alignment.
-Header & Typography: In the top header section, render a white [Brand Name] logo in the top-left corner. 
-Main Title text: "[Main Title]" (with the key words highlighted in [Accent Color]). 
-Subtitle text: "[Subtitle]" 
-Brand Slogan text: "[Brand Slogan]"
+## 2. 远端万能公式模版
+
+你可以直接使用下面的“万能模版”。只需修改括号内的部分，就能瞬间帮你自己的产品（如：手机、包包、香水、国风潮牌等）直出 15 宫格故事板：
+
+```text
+制作一份【你的品牌与产品名称，例如：华为 Mate XT 三折叠】的高级电影广告故事板分镜。
+
+风格设定： 超逼真【产品风格，例如：科技奢华/国风雅致】营销活动风格。现代【品牌，例如：华为】全球广告美学。专业广告机构陈述板质感。干净的【背景色，例如：深邃墨黑】界面融合了柔和的【点缀色，例如：华丽金】点缀。高端电影美术设计。简约而优雅的排版。
+
+排版与布局： 布局为一张大横向16：9的故事板大图。中间包含15个电影分镜面板，呈 3行×5列 网格排列。面板间使用细细的高级边框隔开。背景为暗色电影UI风格，保证专业的间距和精准对齐。
+
+顶部标题与文案： 顶部标题区：左上角渲染一个白色的【品牌Logo，例如：HUAWEI】标志。 主标题文字：“【主标题，例如：华为 Mate XT】”（在“【重点词，例如：三折叠】”字上用【颜色】点缀突出）。 副标题文字：“【副标题，例如：折叠未来。重塑视界。】” 顶级宣传口号：“【宣传口号，例如：见非凡，致非凡。】”
+```
