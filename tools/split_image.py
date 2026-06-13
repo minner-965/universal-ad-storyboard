@@ -43,8 +43,9 @@ def main():
     cell_w = width / cols
     cell_h = height / rows
 
-    # 创建输出文件夹
-    output_dir = os.path.join(".", "output", "sliced_images")
+    # 创建输出文件夹（固定为脚本所在目录的上一级/output/sliced_images）
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    output_dir = os.path.abspath(os.path.join(script_dir, "..", "output", "sliced_images"))
     os.makedirs(output_dir, exist_ok=True)
 
     index = 1
